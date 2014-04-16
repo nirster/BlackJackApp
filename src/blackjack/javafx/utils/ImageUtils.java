@@ -21,7 +21,7 @@ public class ImageUtils {
     }
     
     public static ImageView getCardImageView(String imageName) {
-        return new ImageView(getImage(imageName + ".gif"));
+        return new ImageView(getImage(imageName.toLowerCase() + ".gif"));
     }
     
 }

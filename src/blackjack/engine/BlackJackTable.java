@@ -113,6 +113,10 @@ public class BlackJackTable {
         }
         return null;
     }
+    
+    public List<Player> getPlayers() {
+        return this.players;
+    }
 
     private void initMode(GameMode gameMode) {
         switch (gameMode) {
@@ -149,19 +153,19 @@ public class BlackJackTable {
             p.dropHands();
         }
         this.dealer = Hand.newEmptyHand(0);
-        this.dealer.drawCardFrom(deck);
         this.currentPlayersList = this.players;
         this.currentPlayer = currentPlayersList.get(0);
     }
 
     private void initRoundMode() {
         updateCurrentRoundPlayers();
-        for (int i = 0; i < 2; ++i) {
-            for (Player p : currentRoundPlayers) {
+        for (Player p : currentRoundPlayers) {
+            for (int i = 0; i < 2; ++i) 
                 p.getCurrentHand().drawCardFrom(deck);
-                dealer.drawCardFrom(deck);
-            }
         }
+        for (int i = 0; i < 2; ++i)
+                dealer.drawCardFrom(deck);
+        
         currentPlayersList = currentRoundPlayers;
         currentPlayer = currentPlayersList.get(0);
     }
