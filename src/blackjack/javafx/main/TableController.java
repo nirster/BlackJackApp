@@ -12,8 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 // change
 
@@ -24,6 +28,7 @@ import javafx.scene.layout.VBox;
 public class TableController implements Initializable {
     private BlackJackTable table;
     private float currentPlayerBet = 5f;
+    private boolean isHuman;
     
     @FXML
     private Button placeBetBtn;
@@ -55,10 +60,43 @@ public class TableController implements Initializable {
     private Label handValueLabel;
     @FXML
     private Label handValueLeft;
+    @FXML
+    private TextField nameTextBox;
+    @FXML
+    private Button addPlayerButton;
+    @FXML
+    private RadioButton isHumanRadio;
+    @FXML
+    private AnchorPane enteringPlayersPane;
+    @FXML
+    private Pane dealerPane;
     
     public void setTable(BlackJackTable table) {
         this.table = table;
         updateView();
+    }
+    
+    @FXML
+    private void updateReadingPlayersView(ActionEvent event) {
+        String currentName = nameTextBox.getText();
+        if (table.getPlayer(currentName) != null || currentName.isEmpty()) {
+            addPlayerButton.setDisable(true);
+            addPlayerButton.setOpacity(0.2);
+        }
+        else {
+            addPlayerButton.setDisable(false);
+        }
+    }
+    
+    @FXML
+    private void onAddPlayerClick(ActionEvent event) {
+        PlayerType playerType = isHuman ? PlayerType.HUMAN : PlayerType.COMPUTER;
+        table.addPlayer(nameTextBox.getText(), playerType);
+    }
+    
+    @FXML
+    private void onHumanClick(ActionEvent event) {
+        isHuman = isHumanRadio.isSelected();
     }
     
     private void updateView() {
@@ -78,7 +116,13 @@ public class TableController implements Initializable {
         }
         
         if (table.getMode() == GameMode.READING_PLAYERS) {
-            // reading players mode
+            placingBetsBox.setVisible(false);
+            handValueBox.setVisible(false);
+            actionsBox.setVisible(false);
+            dealerPane.setVisible(false);
+            chipsBox.setVisible(false);
+            activePlayerInfoBox.setVisible(false);
+            enteringPlayersPane.setVisible(true);
         }
     }
     
@@ -111,7 +155,6 @@ public class TableController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //updateView();
     }
     
     @FXML

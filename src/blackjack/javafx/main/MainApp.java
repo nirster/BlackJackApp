@@ -19,11 +19,6 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         table = BlackJackTable.createDefaultTable();
-        table.addPlayer("Nir", PlayerType.HUMAN);
-        table.addPlayer("Cartman", PlayerType.HUMAN);
-        table.addPlayer("Kyle", PlayerType.HUMAN);
-        table.addPlayer("Kenny", PlayerType.HUMAN);
-        table.addPlayer("Butters", PlayerType.HUMAN);
         
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource("TableFXML.fxml");

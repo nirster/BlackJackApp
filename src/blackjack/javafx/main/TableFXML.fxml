@@ -49,7 +49,7 @@
         </Button>
       </children>
       <effect>
-        <DropShadow color="#fffd81" height="27.071432431538902" radius="13.03571525074187" spread="0.4841269841269841" width="27.071428571428573" />
+        <DropShadow color="#fffd81" height="27.07143050148374" radius="13.035714768228079" spread="0.4841269841269841" width="27.071428571428573" />
       </effect>
     </HBox>
     <MenuBar layoutX="0.0" layoutY="0.0" minHeight="14.0" prefHeight="27.0" prefWidth="887.0" useSystemMenuBar="false">
@@ -100,7 +100,7 @@
         </Button>
       </children>
     </HBox>
-    <Pane layoutX="344.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" snapToPixel="true">
+    <Pane fx:id="dealerPane" layoutX="344.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" snapToPixel="true">
       <children>
         <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="23.0" layoutY="166.0" prefHeight="20.0" prefWidth="155.0" text="Dealer" textAlignment="LEFT" textFill="#fffb00">
           <effect>
@@ -174,7 +174,7 @@
         <Insets left="10.0" top="10.0" />
       </padding>
     </VBox>
-    <AnchorPane id="AnchorPane" layoutX="184.0" layoutY="169.0" maxHeight="-1.0" maxWidth="-1.0" minHeight="229.85272216796875" minWidth="413.0" prefHeight="270.85272216796875" prefWidth="520.0" visible="true">
+    <AnchorPane id="AnchorPane" fx:id="enteringPlayersPane" layoutX="184.0" layoutY="169.0" maxHeight="-1.0" maxWidth="-1.0" minHeight="229.85272216796875" minWidth="413.0" prefHeight="270.85272216796875" prefWidth="520.0" visible="true">
       <children>
         <ImageView fitHeight="270.85272216796875" fitWidth="521.0" layoutX="-1.0" layoutY="0.0" pickOnBounds="true" preserveRatio="false">
           <image>
@@ -188,9 +188,9 @@
                 <Color blue="0.200" green="0.969" red="1.000" fx:id="x5" />
               </textFill>
             </Label>
-            <TextField id="playerNameTextField" layoutX="143.0" layoutY="35.0" prefHeight="20.9609375" prefWidth="212.0" promptText="Enter player name" style="-fx-background-color: gray;&#10;" text="" />
-            <Button id="addPlayerButton" font="$x1" layoutX="372.0" layoutY="35.0" mnemonicParsing="false" onAction="#addPlayer" prefHeight="20.9609375" prefWidth="83.0" style="-fx-background-radius: 10px;&#10;" text="Add Player" textFill="#ff3333" />
-            <RadioButton id="isHumanRadioButton" font="$x1" layoutX="143.0" layoutY="85.0" mnemonicParsing="false" text="Human" textFill="$x5" />
+            <TextField id="playerNameTextField" fx:id="nameTextBox" layoutX="142.0" layoutY="35.0" prefHeight="20.9609375" prefWidth="212.0" promptText="Enter player name" style="-fx-background-color: gray;&#10;" text="" />
+            <Button fx:id="addPlayerButton" font="$x1" layoutX="372.0" layoutY="35.0" mnemonicParsing="false" onAction="#onAddPlayerClick" prefHeight="20.9609375" prefWidth="83.0" style="-fx-background-radius: 10px;&#10;" text="Add Player" textFill="#ff3333" />
+            <RadioButton id="isHumanRadioButton" fx:id="isHumanRadio" font="$x1" layoutX="142.0" layoutY="85.0" mnemonicParsing="false" onAction="#onHumanClick" prefWidth="53.0001220703125" text="Human" textFill="$x5" />
             <Button id="continueButton" font="$x1" layoutX="219.0" layoutY="146.0" mnemonicParsing="false" text="Continue" textFill="RED" />
             <FlowPane alignment="TOP_LEFT" layoutX="312.0" layoutY="62.0" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="148.0" />
             <Label alignment="CENTER" font="$x4" layoutX="143.0" layoutY="62.0" prefWidth="212.0" text="" textFill="WHITE" />

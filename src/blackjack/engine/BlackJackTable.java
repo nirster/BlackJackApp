@@ -105,6 +105,14 @@ public class BlackJackTable {
             }
         }
     }
+    
+    public Player getPlayer(String name) {
+        for (Player p : this.players) {
+            if (p.getName().equals(name))
+                return p;
+        }
+        return null;
+    }
 
     private void initMode(GameMode gameMode) {
         switch (gameMode) {
