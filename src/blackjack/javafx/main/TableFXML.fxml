@@ -188,7 +188,7 @@
                 <Color blue="0.200" green="0.969" red="1.000" fx:id="x5" />
               </textFill>
             </Label>
-            <TextField id="playerNameTextField" fx:id="nameTextBox" layoutX="142.0" layoutY="35.0" prefHeight="20.9609375" prefWidth="212.0" promptText="Enter player name" style="-fx-background-color: gray;&#10;" text="" />
+            <TextField id="playerNameTextField" fx:id="nameTextBox" layoutX="142.0" layoutY="35.0" onInputMethodTextChanged="#updateReadingPlayersView" prefHeight="20.9609375" prefWidth="212.0" promptText="Enter player name" style="-fx-background-color: gray;&#10;" text="" />
             <Button fx:id="addPlayerButton" font="$x1" layoutX="372.0" layoutY="35.0" mnemonicParsing="false" onAction="#onAddPlayerClick" prefHeight="20.9609375" prefWidth="83.0" style="-fx-background-radius: 10px;&#10;" text="Add Player" textFill="#ff3333" />
             <RadioButton id="isHumanRadioButton" fx:id="isHumanRadio" font="$x1" layoutX="142.0" layoutY="85.0" mnemonicParsing="false" onAction="#onHumanClick" prefWidth="53.0001220703125" text="Human" textFill="$x5" />
             <Button id="continueButton" font="$x1" layoutX="219.0" layoutY="146.0" mnemonicParsing="false" text="Continue" textFill="RED" />

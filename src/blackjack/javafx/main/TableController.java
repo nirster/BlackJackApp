@@ -104,12 +104,14 @@ public class TableController implements Initializable {
             placingBetsBox.setVisible(true);
             actionsBox.setVisible(false);
             handValueBox.setVisible(false);
+            enteringPlayersPane.setVisible(false);
         }
         
         if (table.getMode() == GameMode.ROUND) {
             placingBetsBox.setVisible(false);
             handValueBox.setVisible(true);
             actionsBox.setVisible(true);
+            enteringPlayersPane.setVisible(false);
             updateCurrentPlayerView();
             updateLocalValues();
             // updateRestOfPlayersView();
