@@ -9,6 +9,7 @@ import java.util.Objects;
 public final class Card {
     private final Suit suit;
     private final Rank rank;
+    // some change
 
     public Card(Suit suit, Rank rank) {
         this.suit = suit;
