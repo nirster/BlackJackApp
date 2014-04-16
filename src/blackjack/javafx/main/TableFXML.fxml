@@ -16,7 +16,7 @@
   <children>
     <ImageView id="TableBackround" cache="false" disable="false" fitHeight="579.8527221679688" fitWidth="887.0" focusTraversable="false" layoutY="26.85" mouseTransparent="false" pickOnBounds="true" preserveRatio="false" rotate="0.0" smooth="true" visible="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <image>
-        <Image url="@../../resources/images/Red%20table.png" />
+        <Image url="@../../resources/images/Red_table.png" />
       </image>
     </ImageView>
     <HBox fx:id="actionsBox" alignment="CENTER" blendMode="SRC_OVER" cache="false" cacheHint="DEFAULT" disable="false" fillHeight="true" focusTraversable="true" layoutX="285.0" layoutY="539.0" minHeight="19.0" mouseTransparent="false" prefHeight="57.0" prefWidth="322.0">
@@ -49,7 +49,7 @@
         </Button>
       </children>
       <effect>
-        <DropShadow color="#fffd81" height="27.071444011869886" radius="13.035718145824614" spread="0.4841269841269841" width="27.071428571428573" />
+        <DropShadow color="#fffd81" height="27.071432431538902" radius="13.03571525074187" spread="0.4841269841269841" width="27.071428571428573" />
       </effect>
     </HBox>
     <MenuBar layoutX="0.0" layoutY="0.0" minHeight="14.0" prefHeight="27.0" prefWidth="887.0" useSystemMenuBar="false">
