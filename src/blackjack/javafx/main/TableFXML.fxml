@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" cache="true" disable="false" focusTraversable="false" minHeight="606.8527221679688" minWidth="887.0" mouseTransparent="false" pickOnBounds="true" prefHeight="606.8527221679688" prefWidth="887.0" rotate="0.0" snapToPixel="true" styleClass="pane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="blackjack.javafx.main.TableController">
+  <children>
+    <ImageView id="TableBackround" cache="false" disable="false" fitHeight="579.8527221679688" fitWidth="887.0" focusTraversable="false" layoutY="26.85" mouseTransparent="false" pickOnBounds="true" preserveRatio="false" rotate="0.0" smooth="true" visible="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <image>
+        <Image url="@../../resources/images/Red%20table.png" />
+      </image>
+    </ImageView>
+    <HBox fx:id="actionsBox" alignment="CENTER" blendMode="SRC_OVER" cache="false" cacheHint="DEFAULT" disable="false" fillHeight="true" focusTraversable="true" layoutX="285.0" layoutY="539.0" minHeight="19.0" mouseTransparent="false" prefHeight="57.0" prefWidth="322.0">
+      <children>
+        <Button id="" fx:id="Say" alignment="CENTER" cache="false" cacheHint="DEFAULT" cancelButton="false" defaultButton="false" depthTest="INHERIT" focusTraversable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="43.0" style="&#10;&#10;" text="Hit" textAlignment="LEFT" wrapText="false" HBox.hgrow="NEVER">
+          <font>
+            <Font name="Bernard MT Condensed" size="12.0" fx:id="x1" />
+          </font>
+          <stylesheets>
+            <URL value="@Test.css" />
+          </stylesheets>
+          <HBox.margin>
+            <Insets left="5.0" right="25.0" fx:id="x2" />
+          </HBox.margin>
+        </Button>
+        <Button cache="false" font="$x1" mnemonicParsing="false" prefWidth="53.0" style="-fx-backround-radius: 10px;&#10;" text="Stand" HBox.margin="$x2">
+          <stylesheets>
+            <URL value="@Test.css" />
+          </stylesheets>
+        </Button>
+        <Button cache="false" font="$x1" mnemonicParsing="false" style="&#10;" text="Double" textOverrun="WORD_ELLIPSIS" underline="false" HBox.margin="$x2">
+          <stylesheets>
+            <URL value="@Test.css" />
+          </stylesheets>
+        </Button>
+        <Button cache="false" font="$x1" mnemonicParsing="false" prefWidth="53.0" style="&#10;" text="Split" HBox.margin="$x2">
+          <stylesheets>
+            <URL value="@Test.css" />
+          </stylesheets>
+        </Button>
+      </children>
+      <effect>
+        <DropShadow color="#fffd81" height="27.071459452311203" radius="13.035722005934943" spread="0.4841269841269841" width="27.071428571428573" />
+      </effect>
+    </HBox>
+    <MenuBar layoutX="0.0" layoutY="0.0" minHeight="14.0" prefHeight="27.0" prefWidth="887.0" useSystemMenuBar="false">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="New" />
+            <MenuItem mnemonicParsing="false" text="Save to XML..." />
+            <MenuItem mnemonicParsing="false" text="Load from XML..." fx:id="loadXML" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem mnemonicParsing="false" text="How to play" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <HBox id="HBox" fx:id="chipsBox" alignment="CENTER" layoutX="12.0" layoutY="539.0" prefWidth="267.0" spacing="5.0">
+      <children>
+        <Button fx:id="fiveDollarButton" cancelButton="false" minHeight="43.0" minWidth="43.0" mnemonicParsing="false" onAction="#onFiveClick" pickOnBounds="false" prefHeight="57.0" prefWidth="58.0" style="" styleClass="FiveDollar" text="5$" textAlignment="LEFT" textFill="BLACK" textOverrun="ELLIPSIS" underline="false" wrapText="false">
+          <font>
+            <Font name="Bernard MT Condensed" size="15.0" fx:id="x4" />
+          </font>
+          <stylesheets>
+            <URL value="@ChipShape.css" />
+          </stylesheets>
+        </Button>
+        <Button fx:id="tenDollarButton" cancelButton="false" minHeight="43.0" minWidth="43.0" mnemonicParsing="false" onAction="#onTenClick" pickOnBounds="false" prefHeight="57.0" prefWidth="58.0" style="" styleClass="TenDollar" text="10$" textAlignment="LEFT" textFill="BLACK" textOverrun="ELLIPSIS" underline="false" wrapText="false">
+          <font>
+            <Font name="Bernard MT Condensed" size="17.0" />
+          </font>
+          <stylesheets>
+            <URL value="@ChipShape.css" />
+          </stylesheets>
+        </Button>
+        <Button fx:id="twentyFiveDollarButton" cancelButton="false" font="$x4" minHeight="43.0" minWidth="43.0" mnemonicParsing="false" onAction="#onTwentyFiveClick" pickOnBounds="false" prefHeight="57.0" prefWidth="58.0" style="" styleClass="TwentyFiveDollar" text="25$" textAlignment="LEFT" textFill="BLACK" textOverrun="ELLIPSIS" underline="false" wrapText="false">
+          <stylesheets>
+            <URL value="@ChipShape.css" />
+          </stylesheets>
+        </Button>
+        <Button fx:id="hundredDollarButton" cancelButton="false" focusTraversable="true" font="$x4" minHeight="43.0" minWidth="43.0" mnemonicParsing="false" mouseTransparent="false" onAction="#onHundredClick" pickOnBounds="false" prefHeight="57.0" prefWidth="58.0" style="" styleClass="OneHundredDollars" text="100$" textAlignment="LEFT" textFill="BLACK" textOverrun="ELLIPSIS" underline="false" visible="true" wrapText="false">
+          <stylesheets>
+            <URL value="@ChipShape.css" />
+          </stylesheets>
+        </Button>
+      </children>
+    </HBox>
+    <Pane layoutX="344.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" snapToPixel="true">
+      <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="23.0" layoutY="166.0" prefHeight="20.0" prefWidth="155.0" text="Dealer" textAlignment="LEFT" textFill="#fffb00">
+          <effect>
+            <DropShadow blurType="ONE_PASS_BOX" height="33.095238095238095" radius="16.047619047619047" width="33.095238095238095" />
+          </effect>
+          <font>
+            <Font name="Bernard MT Condensed" size="20.0" fx:id="x3" />
+          </font>
+        </Label>
+      </children>
+    </Pane>
+    <VBox fx:id="secondaryPlayersVBox" layoutX="701.0" layoutY="41.0" prefHeight="263.0" prefWidth="184.0" />
+    <HBox fx:id="cardsHBox" layoutX="248.0" layoutY="317.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="380.0" spacing="2.0" />
+    <HBox fx:id="placingBetsBox" alignment="CENTER" layoutX="330.0" layoutY="515.0" prefHeight="40.0" prefWidth="210.0" spacing="10.0">
+      <children>
+        <Button fx:id="skipRoundButton" mnemonicParsing="false" onAction="#onSkipRoundButtonClick" text="Skip Round" />
+        <Button fx:id="placeBetBtn" mnemonicParsing="false" onAction="#onPlaceBetClick" text="Place Bet" />
+      </children>
+    </HBox>
+    <HBox fx:id="handValueBox" alignment="CENTER" disable="false" focusTraversable="false" layoutX="279.0" layoutY="474.0" prefHeight="27.0" prefWidth="289.0" spacing="20.0" visible="true">
+      <children>
+        <Label fx:id="handValueLeft" font="$x3" text="Hand Value:" textFill="WHITE" />
+        <Label fx:id="handValueLabel" font="$x3" text="" textFill="WHITE" />
+      </children>
+      <padding>
+        <Insets left="10.0" right="10.0" />
+      </padding>
+    </HBox>
+    <VBox fx:id="activePlayerInfoBox" alignment="TOP_CENTER" layoutX="593.0" layoutY="518.0" prefHeight="78.0" prefWidth="282.0" spacing="10.0">
+      <children>
+        <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="267.0">
+          <children>
+            <Label font="$x3" text="Name" textFill="WHITE">
+              <HBox.margin>
+                <Insets right="25.0" />
+              </HBox.margin>
+            </Label>
+            <Label fx:id="currentBetHeader" font="$x3" prefWidth="43.0" text="C.bet" textFill="WHITE">
+              <HBox.margin>
+                <Insets left="25.0" right="25.0" />
+              </HBox.margin>
+            </Label>
+            <Label font="$x3" text="Money" textFill="WHITE">
+              <HBox.margin>
+                <Insets left="15.0" right="10.0" />
+              </HBox.margin>
+            </Label>
+          </children>
+        </HBox>
+        <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="267.0">
+          <children>
+            <Label fx:id="currentNameLabel" font="$x3" text="" textFill="WHITE">
+              <HBox.margin>
+                <Insets right="25.0" />
+              </HBox.margin>
+            </Label>
+            <Label fx:id="currentBetLabel" font="$x3" prefWidth="43.0" text="" textFill="WHITE">
+              <HBox.margin>
+                <Insets left="25.0" right="25.0" />
+              </HBox.margin>
+            </Label>
+            <Label fx:id="currentMoneyLabel" font="$x3" text="" textFill="WHITE">
+              <HBox.margin>
+                <Insets left="15.0" right="10.0" />
+              </HBox.margin>
+            </Label>
+          </children>
+        </HBox>
+      </children>
+      <padding>
+        <Insets left="10.0" top="10.0" />
+      </padding>
+    </VBox>
+  </children>
+  <stylesheets>
+    <URL value="@ChipShape.css" />
+  </stylesheets>
+</fx:root>

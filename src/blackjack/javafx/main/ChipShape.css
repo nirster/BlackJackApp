@@ -1,0 +1,83 @@
+.FiveDollar {
+    -fx-background-radius: 100,100;
+    -fx-background-color: linear-gradient(#ffffff,#695469) ;
+    -fx-border-radius: 100, 50;
+    -fx-border-width: 1.2mm ;
+    -fx-border-insets: 0.7;
+    -fx-border-color: black;
+    -fx-padding: 10px;
+    -fx-border-style: dotted; 
+    -fx-border-color: black;
+
+}
+
+.FiveDollar:hover{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
+.FiveDollar:focused{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
+.TenDollar{ 
+    -fx-background-radius: 100,100;
+    -fx-background-color: linear-gradient(#fa0303,#570000);
+    -fx-border-radius: 100, 50;
+    -fx-border-width: 1.2mm;
+    -fx-border-insets: 0.7;
+    -fx-border-color: black;
+    -fx-padding: 10px;
+    -fx-border-style: dotted; 
+    -fx-border-color: black;
+
+}
+
+.TenDollar:hover{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
+.TenDollar:focused{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
+.TwentyFiveDollar{
+    -fx-background-radius: 100,100;
+    -fx-background-color: linear-gradient(#6d76de,#570000);
+    -fx-border-radius: 100, 50;
+    -fx-border-width: 1.2mm   ;
+    -fx-border-insets: 0.7;
+    -fx-border-color: black;
+    -fx-padding: 10px;
+    -fx-border-style: dotted; 
+    -fx-border-color: black;
+}
+
+.TwentyFiveDollar:hover{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
+.TwentyFiveDollar:focused{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
+.OneHundredDollars {
+
+    -fx-background-radius: 100,100;
+    -fx-background-color: linear-gradient(#00cf5a,#570000);
+    -fx-border-radius: 100, 50;
+    -fx-border-width: 1.2mm;
+    -fx-border-insets: 0.7;
+    -fx-border-color: black;
+    -fx-padding: 10px;
+    -fx-border-style: dotted; 
+    -fx-border-color: black;
+}
+
+.OneHundredDollars:hover{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
+.OneHundredDollars:focused{
+    -fx-effect: dropshadow(one-pass-box,#ffff00, 30,-10,1.5,-2);
+}
+
