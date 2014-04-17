@@ -27,6 +27,7 @@ public class MainApp extends Application {
         TableController tableController = (TableController) fxmlLoader.getController();
         tableController.setTable(table);
         stage.setTitle("BlackJack Game");
+        stage.setResizable(false);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

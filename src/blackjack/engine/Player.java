@@ -121,7 +121,7 @@ public class Player {
         else
             for (Hand h : this.hands) {
                 if (h.getUID() != currentHand.getUID())
-                    if (h.isPlayable())
+                    if (h.isPlayable() && !h.isStanding())
                         return true;
             }
         return false;
@@ -130,7 +130,7 @@ public class Player {
     public void switchHands() {
         for (Hand h : this.hands) {
             if (h.getUID() != currentHand.getUID())
-                if (h.isPlayable())
+                if (h.isPlayable() && !h.isStanding())
                     currentHand = h;
         }
     }

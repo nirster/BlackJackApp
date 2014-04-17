@@ -19,7 +19,7 @@
         <Image url="@../../resources/images/Red_table.png" />
       </image>
     </ImageView>
-    <HBox fx:id="actionsBox" alignment="CENTER" blendMode="SRC_OVER" cache="false" cacheHint="DEFAULT" disable="false" fillHeight="true" focusTraversable="true" layoutX="285.0" layoutY="539.0" minHeight="19.0" mouseTransparent="false" prefHeight="57.0" prefWidth="322.0">
+    <HBox fx:id="actionsBox" alignment="CENTER" blendMode="SRC_OVER" cache="false" cacheHint="DEFAULT" disable="false" fillHeight="true" focusTraversable="true" layoutX="285.0" layoutY="540.0" minHeight="19.0" mouseTransparent="false" prefHeight="57.0" prefWidth="322.0">
       <children>
         <Button id="" fx:id="hitButton" alignment="CENTER" cache="false" cacheHint="DEFAULT" cancelButton="false" defaultButton="false" depthTest="INHERIT" focusTraversable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onHitClick" prefWidth="43.0" style="&#10;&#10;" text="Hit" textAlignment="LEFT" wrapText="false" HBox.hgrow="NEVER">
           <font>
@@ -49,14 +49,15 @@
         </Button>
       </children>
       <effect>
-        <DropShadow color="#fffd81" height="27.07143050148374" radius="13.035714768228079" spread="0.4841269841269841" width="27.071428571428573" />
+        <DropShadow color="#fffd81" height="27.071429053942367" radius="13.035714406342734" spread="0.4841269841269841" width="27.071428571428573" />
       </effect>
     </HBox>
     <MenuBar layoutX="0.0" layoutY="0.0" minHeight="14.0" prefHeight="27.0" prefWidth="887.0" useSystemMenuBar="false">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#createNewGame" text="New Game" fx:id="newGameMenuItem" />
+            <MenuItem mnemonicParsing="false" onAction="#createNewGame" text="New Game" />
+            <MenuItem mnemonicParsing="false" text="New Round" />
             <MenuItem mnemonicParsing="false" text="Save to XML..." />
             <MenuItem mnemonicParsing="false" text="Load from XML..." fx:id="loadXML" />
             <MenuItem mnemonicParsing="false" text="Quit" />
@@ -100,9 +101,9 @@
         </Button>
       </children>
     </HBox>
-    <Pane fx:id="dealerPane" layoutX="344.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" snapToPixel="true">
+    <Pane fx:id="dealerPane" layoutX="302.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" snapToPixel="true">
       <children>
-        <Label fx:id="dealerValueLabel" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="23.0" layoutY="166.0" prefHeight="20.0" prefWidth="155.0" text="Dealer" textAlignment="LEFT" textFill="#fffb00">
+        <Label fx:id="dealerValueLabel" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="23.0" layoutY="166.0" prefHeight="20.0" prefWidth="155.0" text="Dealer" textAlignment="LEFT" textFill="WHITE">
           <effect>
             <DropShadow blurType="ONE_PASS_BOX" height="33.095238095238095" radius="16.047619047619047" width="33.095238095238095" />
           </effect>
@@ -125,72 +126,73 @@
         <Button fx:id="placeBetBtn" mnemonicParsing="false" onAction="#onPlaceBetClick" text="Place Bet" />
       </children>
     </HBox>
-    <HBox fx:id="handValueBox" alignment="CENTER" disable="false" focusTraversable="false" layoutX="279.0" layoutY="474.0" prefHeight="27.0" prefWidth="289.0" spacing="20.0" visible="true">
+    <HBox fx:id="handValueBox" alignment="CENTER" disable="false" focusTraversable="false" layoutX="235.0" layoutY="474.0" prefHeight="27.0" prefWidth="393.0" spacing="20.0" visible="true">
       <children>
-        <Label id="handValueLeft" fx:id="handValueLabel" font="$x3" text="Hand Value:" textFill="WHITE" />
+        <Label id="handValueLeft" fx:id="handValueLabel" text="Hand Value:" textFill="WHITE">
+          <font>
+            <Font name="Bernard MT Condensed" size="18.0" fx:id="x5" />
+          </font>
+        </Label>
+        <Label id="handValueLeft" fx:id="currentPlayerBetAmountLabel" font="$x5" text="Bet Amount:" textFill="WHITE" />
       </children>
       <padding>
         <Insets left="10.0" right="10.0" />
       </padding>
     </HBox>
-    <VBox fx:id="activePlayerInfoBox" alignment="TOP_CENTER" layoutX="593.0" layoutY="518.0" prefHeight="78.0" prefWidth="282.0" spacing="10.0">
+    <VBox fx:id="activePlayerInfoBox" alignment="CENTER" layoutX="593.0" layoutY="518.0" prefHeight="78.0" prefWidth="282.0" spacing="15.0">
       <children>
-        <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="267.0">
+        <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="267.0">
           <children>
-            <Label font="$x3" text="Name" textFill="WHITE">
+            <Label alignment="CENTER" font="$x3" text="Name:" textFill="WHITE">
               <HBox.margin>
                 <Insets right="25.0" />
               </HBox.margin>
             </Label>
-            <Label fx:id="currentBetHeader" font="$x3" prefWidth="43.0" text="C.bet" textFill="WHITE">
+            <Label fx:id="currentPlayerNameLabel" alignment="CENTER" font="$x3" text="" textFill="WHITE">
               <HBox.margin>
-                <Insets left="25.0" right="25.0" />
-              </HBox.margin>
-            </Label>
-            <Label font="$x3" text="Money" textFill="WHITE">
-              <HBox.margin>
-                <Insets left="15.0" right="10.0" />
+                <Insets right="25.0" />
               </HBox.margin>
             </Label>
           </children>
         </HBox>
-        <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="267.0">
+        <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="267.0">
           <children>
-            <Label fx:id="currentNameLabel" font="$x3" text="" textFill="WHITE">
+            <Label id="currentNameLabel" font="$x3" text="Money:" textFill="WHITE">
               <HBox.margin>
                 <Insets right="25.0" />
               </HBox.margin>
             </Label>
-            <Label fx:id="currentBetLabel" font="$x3" prefWidth="43.0" text="" textFill="WHITE">
+            <Label id="currentNameLabel" fx:id="currentPlayerMoneyLabel" font="$x3" text="" textFill="WHITE">
               <HBox.margin>
-                <Insets left="25.0" right="25.0" />
-              </HBox.margin>
-            </Label>
-            <Label fx:id="currentMoneyLabel" font="$x3" text="" textFill="WHITE">
-              <HBox.margin>
-                <Insets left="15.0" right="10.0" />
+                <Insets right="25.0" />
               </HBox.margin>
             </Label>
           </children>
         </HBox>
       </children>
       <padding>
-        <Insets left="10.0" top="10.0" />
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
       </padding>
     </VBox>
-    <Pane fx:id="enteringPlayersPane" layoutX="207.0" layoutY="203.0" prefHeight="200.0" prefWidth="474.0">
+    <Pane fx:id="enteringPlayersPane" layoutX="207.0" layoutY="202.0" prefHeight="200.0" prefWidth="474.0">
       <children>
-        <Label alignment="CENTER" contentDisplay="LEFT" font="$x3" layoutX="14.0" layoutY="35.0" prefHeight="27.0" prefWidth="129.0" text="Player Name :" textAlignment="LEFT" underline="true">
-          <textFill>
-            <Color blue="0.200" green="0.969" red="1.000" fx:id="x5" />
-          </textFill>
-        </Label>
+        <Label alignment="CENTER" contentDisplay="LEFT" font="$x3" layoutX="14.0" layoutY="35.0" prefHeight="27.0" prefWidth="129.0" text="Player Name :" textAlignment="LEFT" textFill="WHITE" underline="true" />
         <TextField id="playerNameTextField" fx:id="nameTextBox" layoutX="142.0" layoutY="35.0" prefHeight="20.9609375" prefWidth="212.0" promptText="Enter player name" style="-fx-background-color: gray;&#10;" text="" />
-        <Button fx:id="addPlayerButton" font="$x1" layoutX="372.0" layoutY="35.0" mnemonicParsing="false" onAction="#onAddPlayerClick" prefHeight="20.9609375" prefWidth="83.0" style="-fx-background-radius: 10px;&#10;" text="Add Player" textFill="#ff3333" />
-        <RadioButton id="isHumanRadioButton" fx:id="isHumanRadio" font="$x1" layoutX="142.0" layoutY="85.0" mnemonicParsing="false" onAction="#onHumanClick" prefWidth="53.0001220703125" text="Human" textFill="$x5" />
-        <Button id="continueButton" fx:id="startRoundButton" font="$x1" layoutX="219.0" layoutY="146.0" mnemonicParsing="false" onAction="#onStartGameClick" text="Start Game" textFill="RED" />
+        <Button fx:id="addPlayerButton" font="$x1" layoutX="372.0" layoutY="35.0" mnemonicParsing="false" onAction="#onAddPlayerClick" prefHeight="20.9609375" prefWidth="83.0" style="-fx-background-radius: 10px;&#10;" text="Add Player" textFill="WHITE" />
+        <RadioButton id="isHumanRadioButton" fx:id="isHumanRadio" font="$x1" layoutX="142.0" layoutY="85.0" mnemonicParsing="false" onAction="#onHumanClick" prefWidth="53.0001220703125" text="Human" textFill="WHITE" />
+        <Button id="continueButton" fx:id="startRoundButton" font="$x1" layoutX="219.0" layoutY="146.0" mnemonicParsing="false" onAction="#onStartGameClick" text="Start Game" textFill="WHITE" />
         <FlowPane alignment="TOP_LEFT" layoutX="312.0" layoutY="62.0" orientation="HORIZONTAL" prefHeight="138.0" prefWidth="148.0" />
         <Label fx:id="nameErrorLabel" alignment="CENTER" font="$x4" layoutX="143.0" layoutY="62.0" prefWidth="212.0" text="" textFill="RED" />
+      </children>
+    </Pane>
+    <Button id="" fx:id="switchHandButton" alignment="CENTER" cache="false" cacheHint="DEFAULT" cancelButton="false" defaultButton="false" depthTest="INHERIT" focusTraversable="true" font="$x1" layoutX="644.0" layoutY="481.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSwitchHandClick" prefWidth="81.0" style="&#10;&#10;" text="Switch Hand" textAlignment="LEFT" wrapText="false">
+      <stylesheets>
+        <URL value="@Test.css" />
+      </stylesheets>
+    </Button>
+    <Pane fx:id="messagesPane" layoutX="579.0" layoutY="30.0" prefHeight="186.0" prefWidth="297.0">
+      <children>
+        <VBox fx:id="messagesVBox" layoutX="3.0" layoutY="9.0" prefHeight="166.0" prefWidth="293.0" />
       </children>
     </Pane>
   </children>
