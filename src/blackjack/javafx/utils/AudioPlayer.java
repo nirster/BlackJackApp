@@ -15,6 +15,7 @@ public class AudioPlayer {
     public void enable() {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer(new Media(url));
+            mediaPlayer.setVolume(0.8);
         }
         if (mediaPlayer.getStatus() != MediaPlayer.Status.PLAYING) {
             Runnable r = new Runnable() {

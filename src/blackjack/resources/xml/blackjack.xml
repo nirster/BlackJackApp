@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blackjack xsi:noNamespaceSchemaLocation="blackjack.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           name="game1">
+    <dealer sum="0">
+        <cards>
+            <card rank="SEVEN" suit="DIAMONDS"/>
+        </cards>
+    </dealer>
+    <players>
+        <player name="John" type="COMPUTER" money="100">
+            <bets>
+                <bet sum="10">
+                    <cards>
+                        <card rank="ACE" suit="SPADES"/>
+                        <card rank="JACK" suit="CLUBS"/>
+                    </cards>
+                </bet>
+            </bets>
+        </player>
+        <player name="Ringo" type="HUMAN" money="200">
+            <bets>
+                <bet sum="20">
+                    <cards>
+                        <card rank="TEN" suit="HEARTS"/>                        
+                    </cards>
+                </bet>
+                <bet sum="40">
+                    <cards>
+                        <card rank="TEN" suit="HEARTS"/>                        
+                    </cards>
+                </bet>
+            </bets>
+        </player>
+    </players>    
+</blackjack>

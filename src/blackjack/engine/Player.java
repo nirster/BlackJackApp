@@ -3,6 +3,8 @@ package blackjack.engine;
 //import blackjack.engine.xml.Bet;
 //import blackjack.engine.xml.Bets;
 //import blackjack.engine.xml.Cards;
+import blackjack.xml.Bet;
+import blackjack.xml.Cards;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -81,6 +83,12 @@ public class Player {
             this.isOutOfRound = false;
         }
     
+    public void placeBetWithoutCards(float betValue) {
+        this.funds -= betValue;
+        this.currentHand = hands.get(0);
+        this.isOutOfRound = false;
+    }
+    
     public boolean isOutOfRound() {
         return this.isOutOfRound;
     }
@@ -124,7 +132,7 @@ public class Player {
             return false;
         else
             for (Hand h : this.hands) {
-                if (h.getUID() != currentHand.getUID())
+                if (h.getUID() == null ? currentHand.getUID() != null : !h.getUID().equals(currentHand.getUID()))
                     if (h.isPlayable() && !h.isStanding())
                         return true;
             }
@@ -151,30 +159,18 @@ public class Player {
         return this.playerType;
     }
 
-//    void loadXMLData(com.mta.blackjack.engine.xml.Player xmlPlayer) {
-//        this.funds = xmlPlayer.getMoney();
-//        for (Bet bet : xmlPlayer.getBets().getBet()) {
-//            Hand hand = Hand.newEmptyHand(bet.getSum());
-//            this.bets.add(hand);
-//            this.isActive = true;
-//            for (Cards.Card card : bet.getCards().getCard()) {
-//                Card c = TableManager.xmlCardToGameCard(card);
-//                hand.addCard(c);
-//            }
-//        }
-//    }
-
-//    void createXMLPlayerAndBets(List<com.mta.blackjack.engine.xml.Player> players) {
-//        com.mta.blackjack.engine.xml.Player xmlPlayer = new com.mta.blackjack.engine.xml.Player();
-//        xmlPlayer.setMoney(funds);
-//        xmlPlayer.setName(name);
-//        xmlPlayer.setType(com.mta.blackjack.engine.xml.PlayerType.fromValue(this.playerType.toString()));
-//        xmlPlayer.setBets(new Bets());
-//        players.add(xmlPlayer);
-//        for (Hand hand : this.bets) {
-//            Bet bet = hand.toXMLBet();
-//            xmlPlayer.getBets().getBet().add(bet);
-//        }
-//    }
+    void loadXMLData(blackjack.xml.Player xmlPlayer) {
+        this.funds = xmlPlayer.getMoney();
+        for (Bet bet : xmlPlayer.getBets().getBet()) {
+            Hand hand = Hand.newEmptyHand(bet.getSum());
+            this.hands.add(hand);
+            this.isOutOfRound = false;
+            for (Cards.Card card : bet.getCards().getCard()) {
+                Card c = BlackJackTable.xmlCardToGameCard(card);
+                hand.addCard(c);
+            }
+        }
+        this.currentHand = this.hands.get(0);
+    }
     
 }

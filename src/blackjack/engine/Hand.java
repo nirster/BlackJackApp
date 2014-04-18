@@ -6,13 +6,14 @@ package blackjack.engine;
 //import blackjack.engine.xml.Suit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
  * @author Nir Zarko <nirster@gmail.com>
  */
 public class Hand {
-    private final long uid;
+    private final String uid;
     private final List<Card> cards;
     private float betAmount;
     private boolean beenSplitted;
@@ -24,10 +25,11 @@ public class Hand {
         this.isStanding = false;
         this.beenSplitted = beenSplitted;
         this.betAmount = betAmount;
-        this.uid = IDGenerator.getUID();
+        this.uid = UUID.randomUUID().toString();
+        
     }
     
-    public long getUID() {
+    public String getUID() {
         return this.uid;
     }
     
@@ -40,7 +42,7 @@ public class Hand {
     }
     
     public boolean equalsUID(Hand otherHand) {
-        return this.uid == otherHand.getUID();
+        return (this.uid == null ? otherHand.getUID() == null : this.uid.equals(otherHand.getUID()));
     }
     
     public static Hand newEmptyHand(float betAmount) {

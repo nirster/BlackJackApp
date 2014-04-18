@@ -1,15 +1,12 @@
 package blackjack.engine;
 
-//import blackjack.engine.xml.Bet;
-//import blackjack.engine.xml.Blackjack;
-//import blackjack.engine.xml.Cards;
-//import blackjack.engine.xml.Players;
+import blackjack.xml.Bet;
+import blackjack.xml.Blackjack;
+import blackjack.xml.Cards;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -73,6 +70,11 @@ public class BlackJackTable {
     public final void setMode(GameMode gameMode) {
         this.gameMode = gameMode;
         initMode(gameMode);
+    }
+    
+    public void setModeRoundXML() {
+        this.gameMode = GameMode.ROUND;
+        initXMLRound();
     }
     
     public enum GameMode {
@@ -173,6 +175,12 @@ public class BlackJackTable {
         currentPlayer = currentPlayersList.get(0);
     }
     
+    private void initXMLRound() {
+        updateCurrentRoundPlayers();
+        currentPlayersList = players;
+        currentPlayer = currentPlayersList.get(0);
+    }
+    
     private void initReadingPlayersMode() {
         currentPlayersList = null;
         players = new LinkedList<>();
@@ -181,68 +189,54 @@ public class BlackJackTable {
         currentPlayer = null;
         deck.shuffle();
     }
-
     
+    private void clearTable() {
+        this.dealer = null;
+        this.players = new LinkedList<>();
+        this.currentRoundPlayers = null;
+        this.gameMode = GameMode.READING_PLAYERS;
+        setMode(gameMode);
+        this.currentPlayer = null;
+    }
+    
+    public static Card xmlCardToGameCard(Cards.Card xmlCard) {
+        String rank = xmlCard.getRank().toString();
+        String suit = xmlCard.getSuit().toString();
+        Card.Rank r = Card.Rank.valueOf(rank);
+        Card.Suit s = Card.Suit.valueOf(suit);
+        return new Card(s, r);
+    }
+    
+    private void loadXMLDealer(Bet dealer) {
+        this.dealer = Hand.newEmptyHand(0);
+        for (Cards.Card card : dealer.getCards().getCard()) {
+            Card c = xmlCardToGameCard(card);
+            this.dealer.addCard(c);
+        }
+    }
+    
+    private void loadXMLPlayers(List<blackjack.xml.Player> player) {
+        for (blackjack.xml.Player xmlPlayer : player) {
+            String name = xmlPlayer.getName();
+            String type = xmlPlayer.getType().toString();
+            PlayerType t = PlayerType.valueOf(type);
+            addPlayer(name, t);
+            Player p = getPlayer(name);
+            p.loadXMLData(xmlPlayer);
+        }
+    }
+    
+    public void loadXMLGame(File xmlFile) throws JAXBException {
+        clearTable();
+        JAXBContext jc = JAXBContext.newInstance(Blackjack.class);
+        Unmarshaller u = jc.createUnmarshaller();
+        Blackjack bj = (Blackjack) u.unmarshal(xmlFile);
+        loadXMLDealer(bj.getDealer());
+        loadXMLPlayers(bj.getPlayers().getPlayer());
+        setModeRoundXML();
+    }
 }
     
     
-//    public void loadXMLGame(File xmlFile) {
-//        try {
-//            clearPlayersBets();
-//            clearActivePlayersList();
-//            JAXBContext jc = JAXBContext.newInstance(Blackjack.class);
-//            Unmarshaller u = jc.createUnmarshaller();
-//            Blackjack bj = (Blackjack) u.unmarshal(xmlFile);
-//            loadXMLDealer(bj.getDealer());
-//            loadXMLPlayers(bj.getPlayers().getPlayer());
-//        } catch (JAXBException ex) {
-//            Logger.getLogger(BlackJackTable.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-    
-//    private void loadXMLDealer(Bet dealer) {
-//        createNewDealer();
-//        for (Cards.Card card : dealer.getCards().getCard()) {
-//            Card c = xmlCardToGameCard(card);
-//            this.dealer.addCard(c);
-//        }
-//    }
-//    
-//    public static Card xmlCardToGameCard(Cards.Card xmlCard) {
-//        String rank = xmlCard.getRank().toString();
-//        String suit = xmlCard.getSuit().toString();
-//        Card.Rank r = Card.Rank.valueOf(rank);
-//        Card.Suit s = Card.Suit.valueOf(suit);
-//        return new Card(s, r);
-//    }
-//
-//    private void loadXMLPlayers(List<com.mta.blackjack.engine.xml.Player> player) {
-//        for (com.mta.blackjack.engine.xml.Player xmlPlayer : player) {
-//            String name = xmlPlayer.getName();
-//            String type = xmlPlayer.getType().toString();
-//            PlayerType t = PlayerType.valueOf(type);
-//            addPlayer(name, t);
-//            Player p = findPlayerByName(name);
-//            p.loadXMLData(xmlPlayer);
-//        }
-//    }
-//    public void saveToXML(File xmlFile) {
-//        try {
-//            JAXBContext jc = JAXBContext.newInstance(Blackjack.class);
-//            Marshaller m = jc.createMarshaller();
-//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-//            Blackjack bj = new Blackjack();
-//            bj.setName(tableName);
-//            Bet dealerBet = this.dealer.toXMLBet();
-//            bj.setDealer(dealerBet);
-//            bj.setPlayers(new Players());
-//            bj.getPlayers().getPlayer().clear();
-//            for (Player p : this.players) {
-//                p.createXMLPlayerAndBets(bj.getPlayers().getPlayer());
-//            }
-//            m.marshal(bj, xmlFile);
-//        } catch (JAXBException ex) {
-//            Logger.getLogger(BlackJackTable.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+
 

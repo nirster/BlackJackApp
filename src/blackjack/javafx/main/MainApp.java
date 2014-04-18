@@ -26,6 +26,7 @@ public class MainApp extends Application {
         Parent root = (Parent)fxmlLoader.load(url.openStream());
         TableController tableController = (TableController) fxmlLoader.getController();
         tableController.setTable(table);
+        tableController.setStage(stage);
         stage.setTitle("BlackJack Game");
         stage.setResizable(false);
         Scene scene = new Scene(root);
