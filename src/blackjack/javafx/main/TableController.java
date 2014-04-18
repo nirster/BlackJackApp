@@ -770,7 +770,7 @@ public class TableController implements Initializable {
                         .duration(Duration.millis(1400))
                         .fromValue(0.0)
                         .toValue(1.0)
-                        .cycleCount(10)
+                        .cycleCount(Animation.INDEFINITE)
                         .autoReverse(true)
                         .build();
                         animation.play();
