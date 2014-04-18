@@ -7,6 +7,7 @@ import blackjack.engine.Hand;
 import blackjack.engine.HandAction;
 import blackjack.engine.Player;
 import blackjack.engine.PlayerType;
+import blackjack.javafx.utils.AudioPlayer;
 import blackjack.javafx.utils.Utils;
 import java.net.URL;
 import java.util.List;
@@ -18,7 +19,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -26,12 +26,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -48,6 +47,8 @@ public class TableController implements Initializable {
     private float currentPlayerBet = 5f;
     private boolean isHuman;
     private ObservableList<Label> msgLabelsList;
+    private boolean enableSound = true;
+    private AudioPlayer audioPlayer;
     
     @FXML
     private Button fiveDollarButton;
@@ -107,6 +108,8 @@ public class TableController implements Initializable {
     private HBox dealerCardsHBox;
     @FXML
     private Label dealerValueLabel;
+    @FXML
+    private CheckMenuItem soundToggleItem;
     
     
     public void setTable(BlackJackTable table) {
@@ -227,7 +230,6 @@ public class TableController implements Initializable {
             updateView();
         }
         if (dealer().isBusted()) {
-            Utils.playAww();
             addMessage("Dealer is busted!");
         }
     }
@@ -356,8 +358,8 @@ public class TableController implements Initializable {
         String cssString = "-fx-font: regular 14px \"Arial\"; -fx-text-fill: white;";
         Label msgLabel = new Label(message);
         msgLabel.setStyle(cssString);
-        if (msgLabelsList.size() == 29)
-            msgLabelsList.remove(0);
+        if (messagesVBox.getChildren().size() >= 29)
+            messagesVBox.getChildren().remove(0);
         
         msgLabelsList.add(msgLabel);
         
@@ -413,6 +415,8 @@ public class TableController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        audioPlayer = new AudioPlayer();
+        audioPlayer.enable();
         initTooltips();
         messagesVBox.setAlignment(Pos.TOP_RIGHT);
         
@@ -448,6 +452,16 @@ public class TableController implements Initializable {
         Tooltip splitTooltip = new Tooltip("Split your hand to two different bets");
         Tooltip.install(splitButton, splitTooltip);
         
+    }
+    
+    @FXML
+    private void toggleSound(ActionEvent event) {
+        this.enableSound = soundToggleItem.isSelected();
+        if (enableSound == true) {
+            audioPlayer.enable();
+        } else {
+            audioPlayer.disable();
+        }
     }
     
     @FXML
