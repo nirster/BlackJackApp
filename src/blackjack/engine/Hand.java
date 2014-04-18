@@ -104,7 +104,7 @@ public class Hand {
     
     public List<HandAction> getLegalActions(float playerFunds) {
         List<HandAction> retList = new ArrayList<>();
-        if (!isBusted()) {
+        if (!isBusted() && !isStanding()) {
             retList.add(HandAction.HIT);
             retList.add(HandAction.STAND);
             

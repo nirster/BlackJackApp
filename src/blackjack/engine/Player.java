@@ -62,6 +62,10 @@ public class Player {
         this.funds = newValue;
     }
     
+    public List<Hand> getHands() {
+        return this.hands;
+    }
+    
     public void dropHands() {
         if (!this.hands.isEmpty()) {
             hands.clear();

@@ -115,7 +115,10 @@ public class BlackJackTable {
     }
     
     public List<Player> getPlayers() {
-        return this.players;
+        if (this.gameMode == GameMode.READING_PLAYERS)
+            return this.players;
+        else
+            return this.currentPlayersList;
     }
 
     private void initMode(GameMode gameMode) {

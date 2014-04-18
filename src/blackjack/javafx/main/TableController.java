@@ -7,7 +7,7 @@ import blackjack.engine.Hand;
 import blackjack.engine.HandAction;
 import blackjack.engine.Player;
 import blackjack.engine.PlayerType;
-import blackjack.javafx.utils.ImageUtils;
+import blackjack.javafx.utils.Utils;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,23 +17,21 @@ import javafx.animation.FadeTransitionBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -51,6 +49,16 @@ public class TableController implements Initializable {
     private boolean isHuman;
     private ObservableList<Label> msgLabelsList;
     
+    @FXML
+    private Button fiveDollarButton;
+    @FXML
+    private Button tenDollarButton;
+    @FXML
+    private Button twentyFiveDollarButton;
+    @FXML
+    private Button hundredDollarButton;
+    @FXML
+    private Button placeBetBtn;
     @FXML
     private Button switchHandButton;
     @FXML
@@ -159,40 +167,57 @@ public class TableController implements Initializable {
         isHuman = isHumanRadio.isSelected();
     }
     
-    @FXML
-    private void onHitClick(ActionEvent event) {
-        table.getCurrentPlayer().doHit();
-        addMessage(activePlayer().getName() + " is hitting");
-        updateView();
-        
-        if (activeHand().isBlackJack()) {
-            addMessage(activePlayer().getName() + " has BlackJack! :)");
-            addMessage(activePlayer().getName() + " gets " + activeHand().getBetAmount() * 2.5 + "$");
-            onDoneTurn();
-        }
-        
-        if (activeHand().isBusted()) {
-            addMessage(activePlayer().getName() + " is busted! :(");
-            onDoneTurn();
-        }
-        
-        updateView();
-    }
+
     
     private void onDoneTurn() {
+        // move to next hand if the player has more than one hand
         if (activePlayer().hasMoreHands()) {
             activePlayer().switchHands();
             updateView();
         }
-        
+        // move to next player
         else if (table.hasNextPlayer()) {
                 table.moveToNextPlayer();
                 updateView();
         }
-        
+        // everyone done playing
         else {
             doDealerMove();
+            computeResults();
         }
+    }
+    
+    private void computeResults() {
+        for (Player p : table.getPlayers()) {
+            for (Hand hand : p.getHands()) {
+                if (!hand.isBusted()) {
+                    if (hand.cardsValue() < dealer().cardsValue() && !dealer().isBusted()) {
+                        addMessage(p.getName() + " lost the round");
+                        addMessage(p.getName() + " now has " + p.getFunds() + "$");
+                    }
+                    if (hand.cardsValue() == dealer().cardsValue() && !dealer().isBusted()) {
+                        p.setFunds(p.getFunds() + hand.getBetAmount());
+                        addMessage(p.getName() + " gets his money back: " + hand.getBetAmount() + "$");
+                        addMessage(p.getName() + " now has " + p.getFunds() + "$");
+                    }
+                    if (hand.cardsValue() > dealer().cardsValue() || dealer().isBusted()) {
+                        final float normalWinFactor = 2.0f;
+                        final float winAmount = hand.getBetAmount() * normalWinFactor;
+                        p.setFunds(p.getFunds() + winAmount);
+                        addMessage(p.getName() + " wins " + winAmount + "$");
+                        addMessage(p.getName() + " now has " + p.getFunds() + "$");
+                    }
+
+                }
+            }
+        }
+        addMessage("You can start a new round from");
+        addMessage("\"File -> New Round\"");
+        
+        for (Node node : actionsBox.getChildren())
+            node.setDisable(true);
+        
+        updateView();
     }
     
     private void doDealerMove() {
@@ -201,6 +226,33 @@ public class TableController implements Initializable {
             addMessage("dealer is hitting");
             updateView();
         }
+        if (dealer().isBusted()) {
+            Utils.playAww();
+            addMessage("Dealer is busted!");
+        }
+    }
+    
+        @FXML
+    private void onHitClick(ActionEvent event) {
+        table.getCurrentPlayer().doHit();
+        addMessage(activePlayer().getName() + " is hitting");
+        
+        if (activeHand().isBlackJack()) {
+            final float blackJackWinFactor = 2.5f;
+            final float bjWinValue = activeHand().getBetAmount() * blackJackWinFactor;
+            addMessage(activePlayer().getName() + " has BlackJack! :)");
+            addMessage(activePlayer().getName() + " gets " + bjWinValue + "$");
+            onDoneTurn();
+        }
+        
+        if (activeHand().isBusted()) {
+            Utils.playAww();
+            addMessage(activePlayer().getName() + " is busted! :(");
+            activePlayer().doStand();
+            onDoneTurn();
+        }
+        
+        updateView();
     }
     
     @FXML
@@ -209,6 +261,7 @@ public class TableController implements Initializable {
         addMessage(activePlayer().getName() + " is standing");
 
         if (activeHand().isBusted()) {
+            Utils.playAww();
             addMessage(activePlayer().getName() + " is busted! :(");
         }
 
@@ -220,7 +273,9 @@ public class TableController implements Initializable {
         activePlayer().doDouble();
         updateView();
         if (activeHand().isBusted()) {
+            Utils.playAww();
             addMessage(activePlayer().getName() + " is busted! :(");
+            activePlayer().doStand();
             onDoneTurn();
         }
     }
@@ -235,11 +290,10 @@ public class TableController implements Initializable {
    
     
     private void updateView() {
-        hideNameError();
-        
         if (table.getMode() == GameMode.PLACING_BETS) {
             // show
             chipsBox.setVisible(true);
+            updateChipsBoxButtons();
             placingBetsBox.setVisible(true);
             activePlayerInfoBox.setVisible(true);
             updatePlayerInfoBoxView();
@@ -283,6 +337,16 @@ public class TableController implements Initializable {
         }
     }
     
+    private void updateChipsBoxButtons() {
+        float playerFunds = activePlayer().getFunds();
+        
+        fiveDollarButton.setDisable(playerFunds < 5);
+        tenDollarButton.setDisable(playerFunds < 10);
+        twentyFiveDollarButton.setDisable(playerFunds < 25);
+        hundredDollarButton.setDisable(playerFunds < 100);
+        placeBetBtn.setDisable(playerFunds < 5);
+    }
+    
     
     private void changeMode(GameMode gameMode) {
         updateView();
@@ -292,6 +356,9 @@ public class TableController implements Initializable {
         String cssString = "-fx-font: regular 14px \"Arial\"; -fx-text-fill: white;";
         Label msgLabel = new Label(message);
         msgLabel.setStyle(cssString);
+        if (msgLabelsList.size() == 29)
+            msgLabelsList.remove(0);
+        
         msgLabelsList.add(msgLabel);
         
     }
@@ -301,11 +368,22 @@ public class TableController implements Initializable {
         currentPlayerMoneyLabel.setText(String.valueOf(table.getCurrentPlayer().getFunds()) + "$");
     }
     
+    @FXML
+    private void createNewRound(ActionEvent event) {
+        table.setMode(GameMode.PLACING_BETS);
+        msgLabelsList.clear();
+        messagesVBox.getChildren().clear();
+        dealerPane.setVisible(false);
+        dealerCardsHBox.getChildren().clear();
+        cardsHBox.getChildren().clear();
+        updateView();
+    }
+    
     
     private void updateCardsView() {
         cardsHBox.getChildren().clear();
         for (Card c : activeHand().getCards()) {
-            ImageView cardView = ImageUtils.getCardImageView(c.toString());
+            ImageView cardView = Utils.getCardImageView(c.toString());
             cardsHBox.getChildren().add(cardView);
             FadeTransition animation = FadeTransitionBuilder.create()
                     .node(cardView)
@@ -320,7 +398,7 @@ public class TableController implements Initializable {
         
         dealerCardsHBox.getChildren().clear();
         for (Card c : dealer().getCards()) {
-            ImageView cardView = ImageUtils.getCardImageView(c.toString());
+            ImageView cardView = Utils.getCardImageView(c.toString());
             dealerCardsHBox.getChildren().add(cardView);
         }
         dealerValueLabel.setText("Dealer: " + dealer().cardsValue());
@@ -335,11 +413,11 @@ public class TableController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initTooltips();
         messagesVBox.setAlignment(Pos.TOP_RIGHT);
         
         msgLabelsList = FXCollections.observableArrayList();
         msgLabelsList.addListener(new ListChangeListener<Label>() {
-
             @Override
             public void onChanged(ListChangeListener.Change change) {
                 if (!msgLabelsList.isEmpty()) {
@@ -353,9 +431,23 @@ public class TableController implements Initializable {
                     .build();
             animation.play();
                 }
-                updateView();
             }
         });
+    }
+    
+    private void initTooltips() {
+        Tooltip hitTooltip = new Tooltip("Draw a card");
+        Tooltip.install(hitButton, hitTooltip);
+        
+        Tooltip standTooltip = new Tooltip("Finish your turn");
+        Tooltip.install(standButton, standTooltip);
+        
+        Tooltip doubleTooltip = new Tooltip("Double the bet amount");
+        Tooltip.install(doubleButton, doubleTooltip);
+        
+        Tooltip splitTooltip = new Tooltip("Split your hand to two different bets");
+        Tooltip.install(splitButton, splitTooltip);
+        
     }
     
     @FXML
@@ -386,6 +478,7 @@ public class TableController implements Initializable {
     private void onPlaceBetClick(ActionEvent event) {
         activePlayer().placeInitialBet(currentPlayerBet);
         addMessage(activePlayer().getName() + " placed a bet of " + currentPlayerBet + "$");
+        
         if (table.hasNextPlayer()) {
             table.moveToNextPlayer();
             updateView();
@@ -401,6 +494,16 @@ public class TableController implements Initializable {
     private void onSkipRoundButtonClick(ActionEvent event) {
         activePlayer().setOutOfRound(true);
         addMessage(activePlayer().getName() + " is not playing this round");
+        
+        if (table.hasNextPlayer()) {
+            table.moveToNextPlayer();
+            updateView();
+        }
+        else {
+            table.setMode(GameMode.ROUND);
+            addMessage("Starting round...");
+            updateView();
+        }
     }
 
     private void showNameError() {
@@ -433,12 +536,12 @@ public class TableController implements Initializable {
             node.setDisable(true);
         }
         
-        
-        standButton.setDisable(false);
         List<HandAction> possibleActions = activeHand().getLegalActions(table.getCurrentPlayer().getFunds());
         for (HandAction handAction : possibleActions) {
             if (handAction == HandAction.DOUBLE)
                 doubleButton.setDisable(false);
+            if (handAction == HandAction.STAND)
+                standButton.setDisable(false);
             if (handAction == HandAction.HIT)
                 hitButton.setDisable(false);
             if (handAction == HandAction.SPLIT)
@@ -458,7 +561,7 @@ public class TableController implements Initializable {
             playerBox.setPadding(new Insets(5, 5, 5, 5));
             playerBox.setMaxHeight(secondaryPlayersVBox.getHeight() / 5.0);
             playerBox.setPrefWidth(secondaryPlayersVBox.getWidth());
-            ImageView icon = ImageUtils.getIconImageView(p.getType());
+            ImageView icon = Utils.getIconImageView(p.getType());
             icon.setFitHeight(32);
             icon.setFitWidth(32);
             Label nameLbl = new Label(p.getName());
@@ -470,7 +573,12 @@ public class TableController implements Initializable {
             valueLabel.setAlignment(Pos.CENTER_RIGHT);
             valueLabel.setPrefHeight(playerBox.getHeight());
             playerBox.getChildren().addAll(icon, nameLbl, valueLabel);
-
+            
+            // install tooltip to show player money and number of hands
+            Tooltip tt = new Tooltip("Player money: " + p.getFunds() + "\nPlayer hands: " + p.getHands().size());
+            Tooltip.install(playerBox, tt);
+            
+            // set colors: red - busted, yellow - ok, green - blackjack
             Color color = Color.RED;
             if (p.getCurrentHand().cardsValue() > 21) {
                 color = Color.RED;
@@ -482,8 +590,9 @@ public class TableController implements Initializable {
                 color = Color.YELLOW;
             }
             
+            // infinite fade transition animation for current player (on different thread)
             if (activePlayer().getName().equals(p.getName())) {
-                nameLbl.setStyle("-fx-font: bold 16px \"Arial\"; -fx-text-fill: green;");
+                nameLbl.setStyle("-fx-font: regular 14px \"Arial\"; -fx-text-fill: black;");
                 final FadeTransition animation = FadeTransitionBuilder.create()
                         .node(playerBox)
                         .duration(Duration.millis(1400))
@@ -498,10 +607,9 @@ public class TableController implements Initializable {
                         animation.play();
                     }
                 };
-                
                 new Thread(task).start();
             }
-
+            
             valueLabel.setTextFill(color);
             secondaryPlayersVBox.getChildren().add(playerBox);
 
