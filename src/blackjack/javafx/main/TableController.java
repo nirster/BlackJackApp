@@ -40,7 +40,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.xml.bind.JAXBException;
 import org.xml.sax.SAXException;
-// change
 
 /**
  *

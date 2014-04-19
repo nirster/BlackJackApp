@@ -1,9 +1,5 @@
 package blackjack.engine;
 
-//import blackjack.engine.xml.Bet;
-//import blackjack.engine.xml.Cards;
-//import blackjack.engine.xml.Rank;
-//import blackjack.engine.xml.Suit;
 import blackjack.xml.Bet;
 import blackjack.xml.Cards;
 import blackjack.xml.Rank;
