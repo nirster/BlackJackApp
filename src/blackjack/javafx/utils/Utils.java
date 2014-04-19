@@ -10,6 +10,7 @@ import java.io.InputStream;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.FadeTransitionBuilder;
+import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -101,7 +102,11 @@ public class Utils {
 
                 @Override
                 public void handle(MouseEvent t) {
-                    smallCard.setFitHeight(80);
+                    //smallCard.setFitHeight(80);
+                    ScaleTransition st = new ScaleTransition(Duration.millis(500), smallCard);
+                    st.setToX(1.8);
+                    st.setToY(1.8);
+                    st.play();
                 }
             });
             
@@ -109,7 +114,11 @@ public class Utils {
 
                 @Override
                 public void handle(MouseEvent t) {
-                    smallCard.setFitHeight(42);
+                    //smallCard.setFitHeight(42);
+                    ScaleTransition st = new ScaleTransition(Duration.millis(500), smallCard);
+                    st.setToX(1);
+                    st.setToY(1);
+                    st.play();
                 }
             });
             playerBox.getChildren().add(smallCard);
