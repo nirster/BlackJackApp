@@ -43,6 +43,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.xml.bind.JAXBException;
+import org.xml.sax.SAXException;
 // change
 
 /**
@@ -132,8 +133,9 @@ public class TableController implements Initializable {
         if (xmlFile != null) {
             try {
                 this.table.loadXMLGame(xmlFile);
-            } catch (JAXBException ex) {
-                Logger.getLogger(TableController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JAXBException | SAXException ex) {
+                addMessage("Error reading XML file, starting new game");
+                createNewGame(event);
             }
         }
         updateView();
@@ -341,6 +343,7 @@ public class TableController implements Initializable {
     }
     
     private void doPlaceBet() {
+        utils.playBet();
         activePlayer().placeInitialBet(currentPlayerBet);
         addMessage(activePlayer().getName() + " placed a bet of " + currentPlayerBet + "$");
 
@@ -393,6 +396,8 @@ public class TableController implements Initializable {
         Tooltip.install(splitButton, splitTooltip);
         
     }
+    
+    
     
     private void updateCardsView() {
         cardsHBox.getChildren().clear();
@@ -555,7 +560,7 @@ public class TableController implements Initializable {
             action = HandAction.STAND;
         
         doAction(action);
-        
+        updateActionsBoxView();
     }
     
     private void doAction(HandAction action) {
@@ -617,6 +622,8 @@ public class TableController implements Initializable {
         else {
             doDealerMove();
             computeResults();
+            updateCardsView();
+            updatePlayersListView();
         }
     }
     
@@ -746,11 +753,12 @@ public class TableController implements Initializable {
                 }
                 
             }
+            
             // install tooltip to show player money and number of hands
-            Tooltip tt = new Tooltip("Player money: " + p.getFunds() + "\nPlayer hands: " + p.getHands().size());
+            Tooltip tt = new Tooltip("Money: " + p.getFunds() + "$" + "\nBet: " + p.getCurrentHand().getBetAmount() + "$");
             Tooltip.install(playerBox, tt);
             
-            // set colors: red - busted, yellow - ok, green - blackjack
+            // set colors: red - busted, yellow - not busted, green - blackjack
             Color color = Color.RED;
             if (p.getCurrentHand().cardsValue() > 21) {
                 color = Color.RED;
@@ -762,7 +770,6 @@ public class TableController implements Initializable {
                 color = Color.YELLOW;
             }
             
-            // infinite fade transition animation for current player (on different thread)
             if (activePlayer().getName().equals(p.getName())) {
                 nameLbl.setStyle("-fx-font: regular 14px \"Arial\"; -fx-text-fill: black;");
                 final FadeTransition animation = FadeTransitionBuilder.create()

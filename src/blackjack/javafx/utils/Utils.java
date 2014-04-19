@@ -60,4 +60,10 @@ public class Utils {
         AudioClip ac = new AudioClip(url);
         ac.play();
     }
+    
+    public void playBet() {
+        String url = new File("bet.wav").toURI().toString();
+        AudioClip ac = new AudioClip(url);
+        ac.play();
+    }
 }

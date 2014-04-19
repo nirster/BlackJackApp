@@ -10,6 +10,9 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -226,10 +229,13 @@ public class BlackJackTable {
         }
     }
     
-    public void loadXMLGame(File xmlFile) throws JAXBException {
+    public void loadXMLGame(File xmlFile) throws JAXBException, SAXException {
         clearTable();
+        SchemaFactory sf = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = sf.newSchema(getClass().getResource("/blackjack/resources/xml/blackjack.xsd"));
         JAXBContext jc = JAXBContext.newInstance(Blackjack.class);
         Unmarshaller u = jc.createUnmarshaller();
+        u.setSchema(schema);
         Blackjack bj = (Blackjack) u.unmarshal(xmlFile);
         loadXMLDealer(bj.getDealer());
         loadXMLPlayers(bj.getPlayers().getPlayer());
