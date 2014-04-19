@@ -3,12 +3,14 @@ package blackjack.engine;
 import blackjack.xml.Bet;
 import blackjack.xml.Blackjack;
 import blackjack.xml.Cards;
+import blackjack.xml.Players;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -240,6 +242,26 @@ public class BlackJackTable {
         loadXMLDealer(bj.getDealer());
         loadXMLPlayers(bj.getPlayers().getPlayer());
         setModeRoundXML();
+    }
+    
+    public void saveToXML(File xmlFile) throws JAXBException, SAXException {
+            SchemaFactory sf = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = sf.newSchema(getClass().getResource("/blackjack/resources/xml/blackjack.xsd"));
+            JAXBContext jc = JAXBContext.newInstance(Blackjack.class);
+            Marshaller m = jc.createMarshaller();
+            m.setSchema(schema);
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            Blackjack bj = new Blackjack();
+            bj.setName(tableName);
+            Bet dealerBet = this.dealer.toXMLBet();
+            bj.setDealer(dealerBet);
+            bj.setPlayers(new Players());
+            bj.getPlayers().getPlayer().clear();
+            for (Player p : this.players) {
+                p.createXMLPlayerAndBets(bj.getPlayers().getPlayer());
+            }
+            m.marshal(bj, xmlFile);
+        
     }
 }
     

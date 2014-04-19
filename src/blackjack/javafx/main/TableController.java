@@ -13,9 +13,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.FadeTransitionBuilder;
 import javafx.application.Platform;
@@ -25,7 +22,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -60,7 +56,11 @@ public class TableController implements Initializable {
     private AudioPlayer audioPlayer;
     private boolean isDealerHidden = true;
     private Utils utils;
+    private File xmlSaveFile = null;
     
+    
+    @FXML
+    private CheckMenuItem saveNextRound;
     @FXML
     private Button fiveDollarButton;
     @FXML
@@ -71,8 +71,6 @@ public class TableController implements Initializable {
     private Button hundredDollarButton;
     @FXML
     private Button placeBetBtn;
-    @FXML
-    private Button switchHandButton;
     @FXML
     private Button hitButton;
     @FXML
@@ -125,7 +123,7 @@ public class TableController implements Initializable {
 
     
     @FXML
-    private void openFileChooser(ActionEvent event) {
+    private void loadXMLGame(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load from XML File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML File(*.xml)", "*.xml"));
@@ -133,12 +131,26 @@ public class TableController implements Initializable {
         if (xmlFile != null) {
             try {
                 this.table.loadXMLGame(xmlFile);
-            } catch (JAXBException | SAXException ex) {
+                addMessage("Game was loaded from " + xmlFile.toString());
+            } catch (JAXBException | SAXException | NullPointerException ex) {
                 addMessage("Error reading XML file, starting new game");
+                addMessage(ex.getMessage());
                 createNewGame(event);
             }
         }
         updateView();
+    }
+    
+    @FXML
+    private void saveXMLGame(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Saving to XML");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML File(*.xml)", "*.xml"));
+        xmlSaveFile = fileChooser.showSaveDialog(stage);
+
+        if (!xmlSaveFile.getName().contains(".")) {
+            xmlSaveFile = new File(xmlSaveFile.getAbsolutePath() + ".xml");
+        }
     }
     
     @FXML
@@ -174,12 +186,6 @@ public class TableController implements Initializable {
         table = BlackJackTable.createDefaultTable();
         msgLabelsList.clear();
         messagesVBox.getChildren().clear();
-        updateView();
-    }
-    
-    @FXML
-    private void onSwitchHandClick(ActionEvent event) {
-        table.getCurrentPlayer().switchHands();
         updateView();
     }
     
@@ -352,6 +358,7 @@ public class TableController implements Initializable {
             updateView();
         } else {
             table.setMode(GameMode.ROUND);
+            saveGameIfSelected();
             addMessage("Starting round...");
             updateView();
         }
@@ -372,6 +379,7 @@ public class TableController implements Initializable {
         }
         else {
             table.setMode(GameMode.ROUND);
+            saveGameIfSelected();
             addMessage("Starting round...");
             updateView();
         }
@@ -397,7 +405,18 @@ public class TableController implements Initializable {
         
     }
     
-    
+    private void saveGameIfSelected() {
+        if (saveNextRound.isSelected() && xmlSaveFile != null) {
+            try {
+                table.saveToXML(xmlSaveFile);
+                addMessage("Game was saved to " + xmlSaveFile.toString());
+                saveNextRound.selectedProperty().setValue(false);
+            } catch (JAXBException | SAXException | NullPointerException ex) {
+                addMessage("Failed saving game to XML file");
+                addMessage(ex.getMessage());
+            }
+        }
+    }
     
     private void updateCardsView() {
         cardsHBox.getChildren().clear();
@@ -434,12 +453,6 @@ public class TableController implements Initializable {
             }
         }
         
-        if (activePlayer().hasMoreHands()) {
-            switchHandButton.setVisible(true);
-        }
-        else {
-            switchHandButton.setVisible(false);
-        }
     }
     
     public void setTable(BlackJackTable table) {
@@ -465,8 +478,6 @@ public class TableController implements Initializable {
             enteringPlayersPane.setVisible(false);
             actionsBox.setVisible(false);
             handValueBox.setVisible(false);
-            switchHandButton.setVisible(false);
-            
         }
         
         if (table.getMode() == GameMode.ROUND) {
@@ -495,7 +506,6 @@ public class TableController implements Initializable {
             actionsBox.setVisible(false);
             dealerPane.setVisible(false);
             chipsBox.setVisible(false);
-            switchHandButton.setVisible(false);
             activePlayerInfoBox.setVisible(false);
             
             enteringPlayersPane.setVisible(true);
@@ -631,6 +641,12 @@ public class TableController implements Initializable {
         for (Player p : table.getPlayers()) {
             for (Hand hand : p.getHands()) {
                 if (!hand.isBusted()) {
+                    if (hand.isBlackJack()) {
+                        final float blackjackFactor = 2.5f;
+                        p.setFunds(p.getFunds() + hand.getBetAmount() * blackjackFactor);
+                        addMessage(p.getName() + " has BlackJack!");
+                        addMessage(p.getName() + " now has " + p.getFunds() + "$");
+                    }
                     if (hand.cardsValue() < dealer().cardsValue() && !dealer().isBusted()) {
                         addMessage(p.getName() + " lost the round");
                         addMessage(p.getName() + " now has " + p.getFunds() + "$");
@@ -715,78 +731,20 @@ public class TableController implements Initializable {
                 hitButton.setDisable(false);
             if (handAction == HandAction.SPLIT)
                 splitButton.setDisable(false);
-        }
-        
-        switchHandButton.setVisible(false);
-        if (activePlayer().hasMoreHands())
-            switchHandButton.setVisible(true);
+        }        
+
     }
 
     private void updatePlayersListView() {
 
         secondaryPlayersVBox.getChildren().clear();
         for (Player p : table.getPlayers()) {
-            HBox playerBox = new HBox(8);
-            playerBox.setPadding(new Insets(5, 5, 5, 5));
-            playerBox.setMaxHeight(secondaryPlayersVBox.getHeight() / 5.0);
-            playerBox.setPrefWidth(secondaryPlayersVBox.getWidth());
-            ImageView icon = utils.getIconImageView(p.getType());
-            icon.setFitHeight(42);
-            icon.setPreserveRatio(true);
-            Label nameLbl = new Label(p.getName());
-            nameLbl.setAlignment(Pos.CENTER_LEFT);
-            nameLbl.setPrefHeight(playerBox.getHeight());
-            nameLbl.setStyle("-fx-font: regular 14px \"Arial\"; -fx-text-fill: white;");
-            Label valueLabel = new Label("Hand: " + String.valueOf(p.getCurrentHand().cardsValue()));
-            valueLabel.setStyle("-fx-font: regular 14px \"Arial\";");
-            valueLabel.setAlignment(Pos.CENTER_RIGHT);
-            valueLabel.setPrefHeight(playerBox.getHeight());
-            ImageView smallCard;
-            playerBox.getChildren().addAll(icon, nameLbl, valueLabel);
-            
-            if (!p.getCurrentHand().getCards().isEmpty() && !p.getName().equals(activePlayer().getName())) {
-                for (Card c : p.getCurrentHand().getCards()) {
-                    smallCard = utils.getCardImageView(c.toString().toLowerCase());
-                    smallCard.setFitHeight(42);
-                    smallCard.setPreserveRatio(true);
-                    playerBox.getChildren().add(smallCard);
-                }
-                
+            for (Hand h : p.getHands()) {
+                HBox playerBox = utils.getHandHBox(p, h, activePlayer(), activeHand());
+                secondaryPlayersVBox.getChildren().add(playerBox);
             }
-            
-            // install tooltip to show player money and number of hands
-            Tooltip tt = new Tooltip("Money: " + p.getFunds() + "$" + "\nBet: " + p.getCurrentHand().getBetAmount() + "$");
-            Tooltip.install(playerBox, tt);
-            
-            // set colors: red - busted, yellow - not busted, green - blackjack
-            Color color = Color.RED;
-            if (p.getCurrentHand().cardsValue() > 21) {
-                color = Color.RED;
-            }
-            if (p.getCurrentHand().cardsValue() == 21) {
-                color = Color.GREEN;
-            }
-            if (p.getCurrentHand().cardsValue() < 21) {
-                color = Color.YELLOW;
-            }
-            
-            if (activePlayer().getName().equals(p.getName())) {
-                nameLbl.setStyle("-fx-font: regular 14px \"Arial\"; -fx-text-fill: black;");
-                final FadeTransition animation = FadeTransitionBuilder.create()
-                        .node(playerBox)
-                        .duration(Duration.millis(1400))
-                        .fromValue(0.0)
-                        .toValue(1.0)
-                        .cycleCount(Animation.INDEFINITE)
-                        .autoReverse(true)
-                        .build();
-                        animation.play();
-            }
-            
-            valueLabel.setTextFill(color);
-            secondaryPlayersVBox.getChildren().add(playerBox);
-
         }
+
     }
 
     private void showMaxPlayersError() {

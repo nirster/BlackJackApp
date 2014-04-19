@@ -49,7 +49,7 @@
         </Button>
       </children>
       <effect>
-        <DropShadow color="#fffd81" height="27.07142881268547" radius="13.03571434602851" spread="0.4841269841269841" width="27.071428571428573" />
+        <DropShadow color="#fffd81" height="27.07142869205702" radius="13.035714315871399" spread="0.4841269841269841" width="27.071428571428573" />
       </effect>
     </HBox>
     <MenuBar layoutX="0.0" layoutY="0.0" minHeight="14.0" prefHeight="27.0" prefWidth="1024.0" useSystemMenuBar="false">
@@ -58,8 +58,9 @@
           <items>
             <MenuItem mnemonicParsing="false" onAction="#createNewGame" text="New Game" />
             <MenuItem mnemonicParsing="false" onAction="#createNewRound" text="New Round" />
-            <MenuItem mnemonicParsing="false" text="Save to XML..." />
-            <MenuItem mnemonicParsing="false" onAction="#openFileChooser" text="Load from XML..." fx:id="loadXML" />
+            <MenuItem mnemonicParsing="false" onAction="#saveXMLGame" text="Set Save Filename" />
+            <CheckMenuItem mnemonicParsing="false" text="Save Next Round" fx:id="saveNextRound" />
+            <MenuItem mnemonicParsing="false" onAction="#loadXMLGame" text="Load from XML..." fx:id="loadXML" />
             <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quit" />
           </items>
         </Menu>
@@ -189,11 +190,6 @@
         <Label fx:id="nameErrorLabel" alignment="CENTER" font="$x4" layoutX="143.0" layoutY="62.0" prefWidth="212.0" text="" textFill="RED" />
       </children>
     </Pane>
-    <Button id="" fx:id="switchHandButton" alignment="CENTER" cache="false" cacheHint="DEFAULT" cancelButton="false" defaultButton="false" depthTest="INHERIT" focusTraversable="true" font="$x1" layoutX="640.0" layoutY="633.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSwitchHandClick" prefWidth="81.0" style="&#10;&#10;" text="Switch Hand" textAlignment="LEFT" wrapText="false">
-      <stylesheets>
-        <URL value="@Test.css" />
-      </stylesheets>
-    </Button>
     <Pane fx:id="messagesPane" layoutX="721.0" layoutY="30.0" prefHeight="399.0" prefWidth="297.0">
       <children>
         <VBox fx:id="messagesVBox" layoutX="3.0" layoutY="9.0" prefHeight="166.0" prefWidth="293.0" />

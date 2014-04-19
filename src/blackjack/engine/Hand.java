@@ -4,6 +4,10 @@ package blackjack.engine;
 //import blackjack.engine.xml.Cards;
 //import blackjack.engine.xml.Rank;
 //import blackjack.engine.xml.Suit;
+import blackjack.xml.Bet;
+import blackjack.xml.Cards;
+import blackjack.xml.Rank;
+import blackjack.xml.Suit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -145,16 +149,16 @@ public class Hand {
         cards.add(card);
     }
 
-//    Bet toXMLBet() {
-//        Bet retBet = new Bet();
-//        retBet.setSum(betAmount);
-//        retBet.setCards(new Cards());
-//        for (Card card : this.cards) {
-//            Cards.Card xmlCard = new Cards.Card();
-//            xmlCard.setRank(Rank.fromValue(card.getRank().toString()));
-//            xmlCard.setSuit(Suit.fromValue(card.getSuit().toString()));
-//            retBet.getCards().getCard().add(xmlCard);
-//        }
-//        return retBet;
-//    }
+    Bet toXMLBet() {
+        Bet retBet = new Bet();
+        retBet.setSum(betAmount);
+        retBet.setCards(new Cards());
+        for (Card card : this.cards) {
+            Cards.Card xmlCard = new Cards.Card();
+            xmlCard.setRank(Rank.fromValue(card.getRank().toString()));
+            xmlCard.setSuit(Suit.fromValue(card.getSuit().toString()));
+            retBet.getCards().getCard().add(xmlCard);
+        }
+        return retBet;
+    }
 }

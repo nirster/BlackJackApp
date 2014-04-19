@@ -4,6 +4,7 @@ package blackjack.engine;
 //import blackjack.engine.xml.Bets;
 //import blackjack.engine.xml.Cards;
 import blackjack.xml.Bet;
+import blackjack.xml.Bets;
 import blackjack.xml.Cards;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,6 +172,19 @@ public class Player {
             }
         }
         this.currentHand = this.hands.get(0);
+    }
+    
+    void createXMLPlayerAndBets(List<blackjack.xml.Player> players) {
+        blackjack.xml.Player xmlPlayer = new blackjack.xml.Player();
+        xmlPlayer.setMoney(funds);
+        xmlPlayer.setName(name);
+        xmlPlayer.setType(blackjack.xml.PlayerType.fromValue(this.playerType.toString()));
+        xmlPlayer.setBets(new Bets());
+        players.add(xmlPlayer);
+        for (Hand hand : this.hands) {
+            Bet bet = hand.toXMLBet();
+            xmlPlayer.getBets().getBet().add(bet);
+        }
     }
     
 }
