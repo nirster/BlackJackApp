@@ -49,7 +49,7 @@
         </Button>
       </children>
       <effect>
-        <DropShadow color="#fffd81" height="27.07142869205702" radius="13.035714315871399" spread="0.4841269841269841" width="27.071428571428573" />
+        <DropShadow color="#fffd81" height="27.071428631742798" radius="13.035714300792844" spread="0.4841269841269841" width="27.071428571428573" />
       </effect>
     </HBox>
     <MenuBar layoutX="0.0" layoutY="0.0" minHeight="14.0" prefHeight="27.0" prefWidth="1024.0" useSystemMenuBar="false">
@@ -67,12 +67,6 @@
         <Menu mnemonicParsing="false" text="Sound">
           <items>
             <CheckMenuItem mnemonicParsing="false" onAction="#toggleSound" selected="true" text="On" fx:id="soundToggleItem" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About" />
-            <MenuItem mnemonicParsing="false" text="How to play" />
           </items>
         </Menu>
       </menus>

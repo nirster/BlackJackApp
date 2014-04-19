@@ -61,7 +61,7 @@ public class Utils {
     
     public HBox getHandHBox(Player p, Hand h, Player activePlayer, Hand activeHand) {
         // default config for all players
-        HBox playerBox = new HBox(8);
+        final HBox playerBox = new HBox(8);
         playerBox.setPadding(new Insets(5, 5, 5, 5));
         playerBox.setMaxHeight(110);
         playerBox.setPrefWidth(322);
@@ -143,6 +143,28 @@ public class Utils {
                         .build();
                         animation.play();
             }
+        
+        playerBox.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                ScaleTransition st = new ScaleTransition(Duration.millis(500), playerBox);
+                    st.setToX(1.3);
+                    st.setToY(1.3);
+                    st.play();
+            }
+        });
+        
+        playerBox.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                ScaleTransition st = new ScaleTransition(Duration.millis(500), playerBox);
+                    st.setToX(1);
+                    st.setToY(1);
+                    st.play();
+            }
+        });
 
         return playerBox;
     }

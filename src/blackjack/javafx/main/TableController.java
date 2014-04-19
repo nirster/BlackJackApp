@@ -247,8 +247,9 @@ public class TableController implements Initializable {
     
     private void doDouble() {
         utils.playDraw();
-         activePlayer().doDouble();
-         addMessage(activePlayer().getName() + " doubles his bet");
+        activePlayer().doDouble();
+        addMessage(activePlayer().getName() + " doubles his bet");
+        onDoneTurn();
         updateView();
         if (activeHand().isBusted()) {
             utils.playAww();

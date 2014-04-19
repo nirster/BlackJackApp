@@ -251,6 +251,7 @@ public class BlackJackTable {
             Marshaller m = jc.createMarshaller();
             m.setSchema(schema);
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            m.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, "blackjack.xsd");
             Blackjack bj = new Blackjack();
             bj.setName(tableName);
             Bet dealerBet = this.dealer.toXMLBet();
