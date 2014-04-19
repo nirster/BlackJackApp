@@ -10,12 +10,14 @@ import java.io.InputStream;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.FadeTransitionBuilder;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
@@ -90,10 +92,26 @@ public class Utils {
         
         // add cards images
         for (Card card : h.getCards()) {
-            ImageView smallCard;
+            final ImageView smallCard;
             smallCard = getCardImageView(card.toString().toLowerCase());
             smallCard.setFitHeight(42);
             smallCard.setPreserveRatio(true);
+            
+            smallCard.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent t) {
+                    smallCard.setFitHeight(80);
+                }
+            });
+            
+            smallCard.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent t) {
+                    smallCard.setFitHeight(42);
+                }
+            });
             playerBox.getChildren().add(smallCard);
         }
         

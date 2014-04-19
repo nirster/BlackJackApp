@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -247,6 +248,7 @@ public class TableController implements Initializable {
     private void doDouble() {
         utils.playDraw();
          activePlayer().doDouble();
+         addMessage(activePlayer().getName() + " doubles his bet");
         updateView();
         if (activeHand().isBusted()) {
             utils.playAww();
@@ -303,6 +305,22 @@ public class TableController implements Initializable {
                             .toValue(1.0)
                             .build();
                     animation.play();
+                }
+            }
+        });
+        
+        saveNextRound.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent t) {
+                if (saveNextRound.isSelected()) {
+                    if (xmlSaveFile != null) {
+                        addMessage("Next round will be saved to");
+                        addMessage(xmlSaveFile.toString());
+                    } else {
+                        addMessage("You must first set save location from");
+                        addMessage("File->Set Save Location");
+                    }
                 }
             }
         });
